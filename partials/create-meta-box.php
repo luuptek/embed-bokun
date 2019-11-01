@@ -10,7 +10,7 @@ if ( ! $bokun->has_settings_ok() ) {
 } else {
 	?>
     <p><?php _e( 'Enter bokun ID of the product (this is found in Bokun.io).', $this->text_domain ); ?></p>
-	<?php wp_nonce_field( basename( __FILE__ ), 'bdi_meta_box_nonce' ); ?>
+	<?php wp_nonce_field( 'verify_bdi_nonce', 'bdi_meta_box_nonce' ); ?>
     <label class="l" for="bdi_bokun_id">
 		<?php _e( 'Bokun ID', $this->text_domain ) ?>
     </label>

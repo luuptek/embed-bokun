@@ -57,6 +57,22 @@ class Bokun_data_importer {
 	public $cron_hook_name = 'bdi_update_bokun_data';
 
 	/**
+	 * Array to query bokun posts
+	 *
+	 * @var array
+	 */
+	public $meta_query_array = [
+		'post_type'      => 'any',
+		'posts_per_page' => - 1,
+		'meta_query'     => [
+			[
+				'key' => '_bdi_bokun_id',
+				'compare'  => 'EXISTS',
+			]
+		],
+	];
+
+	/**
 	 * Constructor for class
 	 * - init hooks
 	 * - setup text domain
@@ -116,7 +132,19 @@ class Bokun_data_importer {
 	 */
 	public function update_bokun_data_in_posts() {
 		if ( $this->has_settings_ok() ) {
-			//Lets update...
+			$args = [
+				'post_type'      => 'any',
+				'posts_per_page' => - 1,
+				'meta_query'     => $this->meta_query_array,
+			];
+
+			$posts = get_posts($args);
+			
+			foreach ($posts as $post) {
+
+			}
+
+			var_dump($posts);
 
 		}
 	}
@@ -153,7 +181,7 @@ class Bokun_data_importer {
 	 */
 	public function save_meta_box( $post_id ) {
 
-		if ( ! isset( $_POST["bdi_meta_box_nonce"] ) || ! wp_verify_nonce( $_POST["bdi_meta_box_nonce"], basename( __FILE__ ) ) ) {
+		if ( ! isset( $_POST["bdi_meta_box_nonce"] ) || ! wp_verify_nonce( $_POST["bdi_meta_box_nonce"], 'verify_bdi_nonce' ) ) {
 			return $post_id;
 		}
 
