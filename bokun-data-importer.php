@@ -66,8 +66,8 @@ class Bokun_data_importer {
 		'posts_per_page' => - 1,
 		'meta_query'     => [
 			[
-				'key' => '_bdi_bokun_id',
-				'compare'  => 'EXISTS',
+				'key'     => '_bdi_bokun_id',
+				'compare' => 'EXISTS',
 			]
 		],
 	];
@@ -138,13 +138,20 @@ class Bokun_data_importer {
 				'meta_query'     => $this->meta_query_array,
 			];
 
-			$posts = get_posts($args);
-			
-			foreach ($posts as $post) {
+			$posts = get_posts( $args );
 
+			foreach ( $posts as $post ) {
+				$bokun_id   = get_post_meta( $post->ID, '_bdi_bokun_id', true );
+				$bokun_auth = new Bokun_auth( 'GET', '/activity.json/' . $bokun_id . '?lang=EN' );
+				$data       = $bokun_auth->get_bokun_data();
+
+				/**
+				 * $bokun_auth->get_bokun_data() will return false, if not successful query
+				 */
+				if ( $data !== false ) {
+					Bokun_helpers::update_bokun_content( $post->ID, $data );
+				}
 			}
-
-			var_dump($posts);
 
 		}
 	}
@@ -254,5 +261,9 @@ class Bokun_data_importer {
 		load_plugin_textdomain( $this->text_domain, false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
 	}
 }
+
+// Require classes
+include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_auth.php';
+include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_helpers.php';
 
 $bokun_data_importer = new Bokun_data_importer();
