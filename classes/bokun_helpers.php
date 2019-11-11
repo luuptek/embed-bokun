@@ -1,25 +1,30 @@
 <?php
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class Bokun_helpers {
 	public static function update_bokun_content( $post_id, $data ) {
-		var_dump($post_id);
 		if ( $post_id === null ) {
 			return;
 		}
 
-		$basic_post_content = [
-			'ID'           => $post_id,
-			'post_title'   => $data->title,
-			'post_content' => self::get_post_content( $data ),
-			'post_excerpt' => $data->excerpt,
-		];
-		wp_update_post( $basic_post_content );
-
 		//Create meta data
-		//$this->update_post_meta_details_for_activity( $post_id, $data );
+		self::update_post_meta_details_for_activity( $post_id, $data );
 	}
 
-	public static function get_post_content( $data ) {
+	private static function update_post_meta_details_for_activity( $post_id, $data ) {
+		update_post_meta( $post_id, '_bokun_wp_product_api_response', $data );
+		//update_post_meta( $post_id, '_bokun_activity_description', self::get_post_content( $data ) );
+		//update_post_meta( $post_id, '_bokun_activity_vendor_title', $data->actualVendor->title );
+		//update_post_meta( $post_id, '_bokun_activity_starting_price', $data->nextDefaultPrice );
+		//update_post_meta( $post_id, '_bokun_activity_duration', $data->durationText );
+		//update_post_meta( $post_id, '_bokun_activity_minimum_age', $data->minAge );
+	}
+
+	private static function get_post_content( $data ) {
 		$content = $data->description;
 
 		if ( ! empty( $data->included ) ) {
