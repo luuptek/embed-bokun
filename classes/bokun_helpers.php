@@ -24,7 +24,7 @@ class Bokun_helpers {
 		//update_post_meta( $post_id, '_bokun_activity_minimum_age', $data->minAge );
 	}
 
-	private static function get_post_content( $data ) {
+	public static function get_description_content( $data ) {
 		$content = $data->description;
 
 		if ( ! empty( $data->included ) ) {
@@ -46,5 +46,18 @@ class Bokun_helpers {
 		return $content;
 
 
+	}
+
+	public static function get_images_carousel_data( $data ) {
+		$array = [];
+		$base_url       = 'https://bokunprod.imgix.net';
+
+		foreach ( $data->photos as $photo ) {
+			$image_url              = $base_url . $photo->fileName . '?h=850&w=1500&fit=crop&crop=center&auto=format';
+			array_push($array, $image_url);
+
+		}
+
+		return $array;
 	}
 }

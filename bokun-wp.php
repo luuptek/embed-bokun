@@ -110,7 +110,7 @@ class Bokun_WP {
 	public function initialize_hooks() {
 		add_action( 'admin_menu', [ $this, 'create_meta_box' ] );
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
-		add_action( 'save_post', [ $this, 'save_meta_box' ] );
+		//add_action( 'save_post', [ $this, 'save_meta_box' ] );
 		add_action( $this->cron_hook_name, [ $this, 'update_bokun_data_in_posts' ] );
 
 		$this->register_cron_hook();
@@ -121,7 +121,7 @@ class Bokun_WP {
 	public function register_assets() {
 		// Register block styles for both frontend + backend.
 		wp_register_style(
-			'bokun-default-bokun-product-widget-style-css', // Handle.
+			'bokun-product-widget-style-css', // Handle.
 			plugins_url( 'dist/blocks.style.build.css', __FILE__ ), // Block style CSS.
 			array( 'wp-editor' ), // Dependency to include the CSS after it.
 			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
@@ -129,25 +129,25 @@ class Bokun_WP {
 
 		// Register block editor script for backend.
 		wp_register_script(
-			'bokun-default-bokun-product-widget-block-js', // Handle.
+			'bokun-product-widget-block-js', // Handle.
 			plugins_url( '/dist/blocks.build.js', __FILE__ ), // Block.build.js: We register the block here. Built with Webpack.
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
+			array( 'jquery', 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
 			null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 			true // Enqueue the script in the footer.
 		);
 
 		//Script for front end
 		wp_enqueue_script(
-			'bokun-default-bokun-product-widget-block-js', // Handle.
+			'bokun-product-widget-block-js', // Handle.
 			plugins_url( '/dist/blocks.build.js', __FILE__ ), // Block.build.js: We register the block here. Built with Webpack.
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
+			array( 'jquery' ), // Dependencies, defined above.
 			null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 			true // Enqueue the script in the footer.
 		);
 
 		// Register block editor styles for backend.
 		wp_register_style(
-			'bokun-default-bokun-product-widget-block-editor-css', // Handle.
+			'bokun-product-widget-block-editor-css', // Handle.
 			plugins_url( 'dist/blocks.editor.build.css', __FILE__ ), // Block editor CSS.
 			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
@@ -155,7 +155,7 @@ class Bokun_WP {
 
 		// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 		wp_localize_script(
-			'bokun-default-bokun-product-widget-block-js',
+			'bokun-product-widget-block-js',
 			'bokunWpGlobal', // Array containing dynamic data for a JS Global.
 			[
 				'pluginDirPath' => plugin_dir_path( __DIR__ ),
@@ -175,30 +175,58 @@ class Bokun_WP {
 		 * @since 1.16.0
 		 */
 		register_block_type(
-			'bokun/default-bokun-product-widget', array(
+			'bokun/product-widget', array(
 				// Enqueue blocks.style.build.css on both frontend & backend.
-				'style'           => 'bokun-default-bokun-product-widget-style-css',
+				'style'           => 'bokun-product-widget-style-css',
 				// Enqueue blocks.build.js in the editor only.
-				'editor_script'   => 'bokun-default-bokun-product-widget-block-js',
+				'editor_script'   => 'bokun-product-widget-block-js',
 				// Enqueue blocks.editor.build.css in the editor only.
-				'editor_style'    => 'bokun-default-bokun-product-widget-block-editor-css',
+				'editor_style'    => 'bokun-product-widget-block-editor-css',
 				'render_callback' => [ $this, 'render_callback_bokun_product' ],
 			)
 		);
 	}
 
-	public function render_callback_bokun_product( $atts ) {
+	public function render_callback_bokun_product( $attributes ) {
 		ob_start(); // Turn on output buffering
-		?>
-        <script type="text/javascript"
-                src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId']; ?>"
-                async></script>
 
-        <div class="bokunWidget"
-             data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId']; ?>/experience/<?php echo $attributes['productId']; ?>"></div>
-        <noscript>Please enable javascript in your browser to book</noscript>
+		echo '<div class="wp-block-bokun-product-widget align' . $attributes['align'] . '">';
 
-		<?php
+		if ( $attributes['use_custom'] ) {
+			global $post;
+
+			$data = get_post_meta( $post->ID, '_bokun_wp_product_api_response', true );
+
+			/**
+			 * Hook: bokun_wp_before_custom_product
+			 *
+			 * @hook: none defined
+			 */
+			do_action( 'bokun_wp_before_custom_product', $data, $attributes );
+
+			/**
+			 * Hook: bokun_wp_custom_product
+			 *
+			 * @hook: bokun_wp_create_images_carousel - 5
+			 * @hook: bokun_wp_create_title - 10
+			 * @hook: bokun_wp_create_excerpt - 15
+			 * @hook: bokun_wp_create_duration - 20
+			 * @hook: bokun_wp_create_content_columns - 30
+			 */
+			do_action( 'bokun_wp_custom_product', $data, $attributes );
+
+			/**
+			 * Hook: bokun_wp_after_custom_product
+			 *
+			 * @hook: none defined
+			 */
+			do_action( 'bokun_wp_after_custom_product', $data, $attributes );
+		} else {
+			echo 'not custom';
+		}
+
+		echo '</div>';
+
 		$output = ob_get_contents(); // collect output
 		ob_end_clean(); // Turn off ouput buffer
 
@@ -207,9 +235,12 @@ class Bokun_WP {
 
 	public function register_bokun_meta() {
 		register_post_meta( '', '_bokun_wp_bokun_id', array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'number',
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'number',
+			'auth_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			}
 		) );
 	}
 
@@ -283,14 +314,14 @@ class Bokun_WP {
 			[ $this, 'create_settings_page' ]
 		);
 
-		add_meta_box(
-			'create_bokun_data_meta_box',
-			__( 'Get Bokun data', $this->text_domain ),
-			[ $this, 'create_bokun_data_importer_meta_box_content' ],
-			apply_filters( 'bokun_wp_support_post_types', [ 'post' ] ),
-			'side',
-			'low'
-		);
+//		add_meta_box(
+//			'create_bokun_data_meta_box',
+//			__( 'Get Bokun data', $this->text_domain ),
+//			[ $this, 'create_bokun_data_importer_meta_box_content' ],
+//			apply_filters( 'bokun_wp_support_post_types', [ 'post' ] ),
+//			'side',
+//			'low'
+//		);
 	}
 
 	/**
@@ -381,5 +412,7 @@ class Bokun_WP {
 // Require classes
 include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_auth.php';
 include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_helpers.php';
+include_once plugin_dir_path( __FILE__ ) . 'includes/bokun-wp-hooks.php';
+include_once plugin_dir_path( __FILE__ ) . 'includes/bokun-wp-functions.php';
 
 $bokun_data_importer = new Bokun_WP();

@@ -1,24 +1,24 @@
 /**
- *  BLOCK: Book Details
- *  ---
- *  Add details for a book to a post or page.
- */
-
-/**
  * External dependencies
  */
-import classnames from 'classnames';
+//import classnames from 'classnames';
+//import jQuery from 'jquery';
+import 'slick-carousel';
+
+jQuery('.bokun-wp-product-images-carousel').slick({
+    arrows: false,
+    dots: true
+});
 
 //  Import CSS.
+import './style.scss'
 import './editor.scss'
 
 const { __ } = wp.i18n;
-const {InspectorControls} = wp.editor;
+const {InspectorControls} = wp.blockEditor;
 const {Fragment, RawHTML} = wp.element;
 const { registerBlockType } = wp.blocks;
 const { TextControl, ToggleControl, Panel, PanelBody, PanelRow } = wp.components;
-
-console.log('TESTING');
 
 registerBlockType('bokun/product-widget', {
     title: __( 'Bokun product' ),
@@ -40,7 +40,9 @@ registerBlockType('bokun/product-widget', {
             type: 'string'
         },
         productId: {
-            type: 'string'
+            type: 'number',
+            source: 'meta',
+            meta: '_bokun_wp_bokun_id'
         },
         use_custom: {
             type: 'boolean',
@@ -52,6 +54,8 @@ registerBlockType('bokun/product-widget', {
     edit: props => {
         // Pull out the props we'll use
         const { attributes, className, setAttributes } = props;
+
+        console.log(attributes);
 
         return (
             <Fragment>
