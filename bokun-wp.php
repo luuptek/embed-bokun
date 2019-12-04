@@ -110,7 +110,7 @@ class Bokun_WP {
 	public function initialize_hooks() {
 		add_action( 'admin_menu', [ $this, 'create_meta_box' ] );
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
-		//add_action( 'save_post', [ $this, 'save_meta_box' ] );
+		add_action( 'save_post', [ $this, 'save_meta_box' ] );
 		add_action( $this->cron_hook_name, [ $this, 'update_bokun_data_in_posts' ] );
 
 		$this->register_cron_hook();
@@ -192,7 +192,7 @@ class Bokun_WP {
 
 		echo '<div class="wp-block-bokun-product-widget align' . $attributes['align'] . '">';
 
-		if ( $attributes['use_custom'] ) {
+		if ( $attributes['useCustom'] ) {
 			global $post;
 
 			$data = get_post_meta( $post->ID, '_bokun_wp_product_api_response', true );
@@ -222,7 +222,7 @@ class Bokun_WP {
 			 */
 			do_action( 'bokun_wp_after_custom_product', $data, $attributes );
 		} else {
-			echo 'not custom';
+			do_action( 'bokun_wp_default_product', $attributes );
 		}
 
 		echo '</div>';
@@ -314,14 +314,14 @@ class Bokun_WP {
 			[ $this, 'create_settings_page' ]
 		);
 
-//		add_meta_box(
-//			'create_bokun_data_meta_box',
-//			__( 'Get Bokun data', $this->text_domain ),
-//			[ $this, 'create_bokun_data_importer_meta_box_content' ],
-//			apply_filters( 'bokun_wp_support_post_types', [ 'post' ] ),
-//			'side',
-//			'low'
-//		);
+		add_meta_box(
+			'create_bokun_data_meta_box',
+			__( 'Get Bokun data', $this->text_domain ),
+			[ $this, 'create_bokun_data_importer_meta_box_content' ],
+			apply_filters( 'bokun_wp_support_post_types', [ 'post' ] ),
+			'side',
+			'low'
+		);
 	}
 
 	/**

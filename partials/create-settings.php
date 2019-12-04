@@ -27,7 +27,7 @@ $bokun = new Bokun_WP();
             </tr>
 
             <tr valign="top">
-                <th scope="row"><?php _e('Booking channel ID', $bokun->text_domain); ?></th>
+                <th scope="row"><?php _e('Booking channel ID (UUID)', $bokun->text_domain); ?></th>
                 <td><input type="text" name="<?php echo $bokun->booking_channel_settings_name; ?>"
                            value="<?php echo esc_attr( get_option( $bokun->booking_channel_settings_name ) ); ?>"/></td>
             </tr>

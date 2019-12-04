@@ -30,7 +30,7 @@ registerBlockType('bokun/product-widget', {
     // Enable or disable support for low-level features
     supports: {
         html: false,
-        reusable: false,
+        reusable: true,
         align: ['full', 'wide']
     },
 
@@ -39,12 +39,15 @@ registerBlockType('bokun/product-widget', {
         bookingChannelId: {
             type: 'string'
         },
-        productId: {
+        productIdMeta: {
             type: 'number',
             source: 'meta',
             meta: '_bokun_wp_bokun_id'
         },
-        use_custom: {
+        productId: {
+            type: 'number'
+        },
+        useCustom: {
             type: 'boolean',
             default: false
         }
@@ -82,9 +85,9 @@ registerBlockType('bokun/product-widget', {
                         <PanelRow>
                             <ToggleControl
                                 label={__('Use custom styling')}
-                                checked={ attributes.use_custom }
+                                checked={ attributes.useCustom }
                                 help={`Bokun plugin comes with default custom styling. You can overwrite the styling in your theme.`}
-                                onChange={ () => setAttributes( { use_custom: ! attributes.use_custom } ) }
+                                onChange={ () => setAttributes( { useCustom: ! attributes.useCustom } ) }
                             />
                         </PanelRow>
                     </PanelBody>
@@ -98,7 +101,7 @@ registerBlockType('bokun/product-widget', {
     },
 
     save: props => {
-
+        //output via PHP
         return null;
     }
 });

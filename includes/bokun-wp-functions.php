@@ -1,5 +1,17 @@
 <?php
 
+function bokun_wp_create_default_product( $attributes ) {
+	?>
+    <script type="text/javascript"
+            src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId'] ?>"
+            async></script>
+
+    <div class="bokunWidget"
+         data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId'] ?>/experience/<?php echo $attributes['productId'] ?>"></div>
+    <noscript>Please enable javascript in your browser to book</noscript>
+	<?php
+}
+
 function bokun_wp_get_product_description( $data ) {
 	return Bokun_helpers::get_description_content( $data );
 }
