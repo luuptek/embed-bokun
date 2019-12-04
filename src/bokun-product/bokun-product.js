@@ -45,7 +45,7 @@ registerBlockType('bokun/product-widget', {
             meta: '_bokun_wp_bokun_id'
         },
         productId: {
-            type: 'number'
+            type: 'string'
         },
         useCustom: {
             type: 'boolean',
@@ -65,24 +65,6 @@ registerBlockType('bokun/product-widget', {
                 <InspectorControls>
                     <PanelBody>
                         <PanelRow>
-                            <TextControl
-                                value={attributes.bookingChannelId}
-                                type="text"
-                                onChange={value => setAttributes({ bookingChannelId: value })}
-                                placeholder="Booking channel ID"
-                                label="Booking channel ID"
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <TextControl
-                                value={attributes.productId}
-                                type="number"
-                                onChange={value => setAttributes({ productId: value })}
-                                placeholder="Product ID"
-                                label="Product ID"
-                            />
-                        </PanelRow>
-                        <PanelRow>
                             <ToggleControl
                                 label={__('Use custom styling')}
                                 checked={ attributes.useCustom }
@@ -90,6 +72,28 @@ registerBlockType('bokun/product-widget', {
                                 onChange={ () => setAttributes( { useCustom: ! attributes.useCustom } ) }
                             />
                         </PanelRow>
+                        { ! attributes.useCustom && (
+                            <PanelRow>
+                                <TextControl
+                                    value={attributes.productId}
+                                    type="number"
+                                    onChange={value => setAttributes({ productId: value })}
+                                    placeholder="Product ID"
+                                    label="Product ID"
+                                />
+                            </PanelRow>
+                        )}
+                        { ! attributes.useCustom && (
+                            <PanelRow>
+                                <TextControl
+                                    value={attributes.bookingChannelId}
+                                    type="text"
+                                    onChange={value => setAttributes({ bookingChannelId: value })}
+                                    placeholder="Booking channel ID"
+                                    label="Booking channel ID"
+                                />
+                            </PanelRow>
+                        )}
                     </PanelBody>
                 </InspectorControls>
                 <div className={className}>
