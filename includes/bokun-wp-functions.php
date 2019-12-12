@@ -1,5 +1,10 @@
 <?php
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function bokun_wp_create_default_product( $attributes ) {
 	?>
     <script type="text/javascript"
