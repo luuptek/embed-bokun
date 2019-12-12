@@ -222,6 +222,11 @@ class Bokun_WP {
 			 */
 			do_action( 'bokun_wp_after_custom_product', $data, $attributes );
 		} else {
+			/**
+			 * Hook: bokun_wp_default_product
+			 *
+			 * @hook: bokun_wp_create_default_product - 10
+			 */
 			do_action( 'bokun_wp_default_product', $attributes );
 		}
 
@@ -287,7 +292,7 @@ class Bokun_WP {
 
 			foreach ( $posts as $post ) {
 				$bokun_id   = get_post_meta( $post->ID, '_bokun_wp_bokun_id', true );
-				$bokun_auth = new Bokun_auth( 'GET', '/activity.json/' . $bokun_id . '?lang=EN' );
+				$bokun_auth = new Bokun_auth( 'GET', '/activity.json/' . $bokun_id );
 				$data       = $bokun_auth->get_bokun_data();
 
 				/**
@@ -373,9 +378,8 @@ class Bokun_WP {
 		$access_key      = ! empty( get_option( $this->access_key_settings_name ) ) ? get_option( $this->access_key_settings_name ) : null;
 		$secret_key      = ! empty( get_option( $this->secret_key_settings_name ) ) ? get_option( $this->secret_key_settings_name ) : null;
 		$booking_channel = ! empty( get_option( $this->booking_channel_settings_name ) ) ? get_option( $this->booking_channel_settings_name ) : null;
-		$currency_unit   = ! empty( get_option( $this->currency_unit_settings_name ) ) ? get_option( $this->currency_unit_settings_name ) : null;
 
-		if ( $access_key === null || $secret_key === null || $booking_channel === null || $currency_unit === null ) {
+		if ( $access_key === null || $secret_key === null || $booking_channel === null ) {
 			return false;
 		} else {
 			return true;

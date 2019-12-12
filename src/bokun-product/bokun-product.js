@@ -14,6 +14,9 @@ jQuery('.bokun-wp-product-images-carousel').slick({
 import './style.scss'
 import './editor.scss'
 
+// Import icons
+import icons from './icons';
+
 const { __ } = wp.i18n;
 const {InspectorControls} = wp.blockEditor;
 const {Fragment, RawHTML} = wp.element;
@@ -40,7 +43,7 @@ registerBlockType('bokun/product-widget', {
             type: 'string'
         },
         productIdMeta: {
-            type: 'number',
+            type: 'string',
             source: 'meta',
             meta: '_bokun_wp_bokun_id'
         },
@@ -97,8 +100,11 @@ registerBlockType('bokun/product-widget', {
                     </PanelBody>
                 </InspectorControls>
                 <div className={className}>
-                    { ( ! attributes.bookingChannelId || ! attributes.productId ) && <p>{ __('Widget settings NOK!') }</p> }
-                    { attributes.bookingChannelId && attributes.productId && <p>{ __('Widget settings OK!') }</p> }
+                    { icons.bokunWhiteLogo }
+                    { ( attributes.useCustom && attributes.productIdMeta === 0) && <p className={'wp-block-bokun-product-widget__warning'}>{__('You have selected to show custom widget, but Bokun ID is not defined for this post. You need to define it under the document tab.')}</p> }
+                    { ( attributes.useCustom && attributes.productIdMeta !== 0) && <p>{__('Your custom widget is ready. Just preview the page and see it in action. You may need to wait an hour until data is fetched from Bokun.')}</p> }
+                    { ( ! attributes.useCustom && ( ! attributes.bookingChannelId || ! attributes.productId ) ) && <p className={'wp-block-bokun-product-widget__warning'}>{ __('When using default widget you need to define booking channel and bokun product id in block settings!') }</p> }
+                    { ( ! attributes.useCustom && ( attributes.bookingChannelId && attributes.productId ) ) && <p>{ __('Your default widget is ready. Just preview the page and see it in action.') }</p> }
                 </div>
             </Fragment>
         )
