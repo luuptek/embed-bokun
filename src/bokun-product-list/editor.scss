@@ -1,0 +1,17 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+.wp-block-bokun-product-list-widget {
+  background-color: $bokun--blue;
+  color: #FFF;
+  text-align: center;
+}
+
+.wp-block-bokun-product-list-widget__warning {
+  padding: 1rem;
+  background-color: red;
+}

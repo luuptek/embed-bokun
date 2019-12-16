@@ -185,6 +185,23 @@ class Bokun_WP {
 				'render_callback' => [ $this, 'render_callback_bokun_product' ],
 			)
 		);
+
+		register_block_type(
+			'bokun/product-list-widget', array(
+				'render_callback' => [$this, 'render_callback_bokun_product_list'],
+			)
+		);
+	}
+
+	public function render_callback_bokun_product_list( $attributes ) {
+		ob_start(); // Turn on output buffering
+
+		bokun_wp_create_default_product_list($attributes);
+
+		$output = ob_get_contents(); // collect output
+		ob_end_clean(); // Turn off ouput buffer
+
+		return $output; // Print output
 	}
 
 	public function render_callback_bokun_product( $attributes ) {

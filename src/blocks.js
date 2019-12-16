@@ -10,3 +10,4 @@
  */
 
 import './bokun-product/bokun-product.js';
+import './bokun-product-list/bokun-product-list.js';
