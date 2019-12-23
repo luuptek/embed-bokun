@@ -61,8 +61,6 @@ registerBlockType('bokun/product-widget', {
         // Pull out the props we'll use
         const { attributes, className, setAttributes } = props;
 
-        console.log(attributes);
-
         return (
             <Fragment>
                 <InspectorControls>
