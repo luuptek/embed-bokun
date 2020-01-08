@@ -60,4 +60,21 @@ class Bokun_helpers {
 
 		return $array;
 	}
+
+	public static function get_main_image($data, $width = 500, $height = 500) {
+		$base_url       = 'https://bokunprod.imgix.net';
+		return $base_url . $data->photos[0]->fileName . '?h=' . $height . '&w=' . $width . '&fit=crop&crop=center&auto=format';
+	}
+
+	public static function get_price($data) {
+		return $data->nextDefaultPrice;
+	}
+
+	public static function get_title($data) {
+		return $data->title;
+	}
+
+	public static function get_excerpt($data) {
+		return $data->excerpt;
+	}
 }
