@@ -39,7 +39,7 @@
   padding: 2rem 0;
 }
 
-.bokun-wp-product-images-carousel {
+.embed-bokun-product-images-carousel {
   opacity: 0;
   visibility: hidden;
   transition: opacity 1s ease;
@@ -49,7 +49,7 @@
     visibility: visible;
     opacity: 1;
   }
-  .bokun-wp-product-images-carousel__slide {
+  .embed-bokun-product-images-carousel__slide {
 
   }
 }

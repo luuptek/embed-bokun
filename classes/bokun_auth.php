@@ -20,8 +20,8 @@ class Bokun_auth {
 	public $bokun_http_method = 'GET';
 
 	public function __construct( $http_method = 'GET', $json_path = null ) {
-		$this->bokun_access_key         = get_option( 'bokun_wp_access_key' );
-		$this->bokun_secret_key         = get_option( 'bokun_wp_secret_key' );
+		$this->bokun_access_key         = get_option( 'embed_bokun_access_key' );
+		$this->bokun_secret_key         = get_option( 'embed_bokun_secret_key' );
 		$this->bokun_json_path          = $json_path;
 		$this->bokun_http_method        = $http_method;
 		$this->utc_datetime             = $this->get_date_in_utc();

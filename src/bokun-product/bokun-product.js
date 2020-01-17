@@ -5,7 +5,7 @@
 //import jQuery from 'jquery';
 import 'slick-carousel';
 
-jQuery('.bokun-wp-product-images-carousel').slick({
+jQuery('.embed-bokun-product-images-carousel').slick({
     arrows: false,
     dots: true
 });
@@ -45,7 +45,7 @@ registerBlockType('bokun/product-widget', {
         productIdMeta: {
             type: 'string',
             source: 'meta',
-            meta: '_bokun_wp_bokun_id'
+            meta: '_embed_bokun_bokun_id'
         },
         productId: {
             type: 'string'

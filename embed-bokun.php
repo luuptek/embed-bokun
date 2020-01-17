@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Bokun WP
+ * Plugin Name: Embed Bokun
  * Description: Bokun plugin for WordPress.
  * Version: 0.1
  * Author: Luuptek
@@ -26,49 +26,49 @@ class Bokun_WP {
 	 *
 	 * @var string
 	 */
-	public $text_domain = 'bokun-wp';
+	public $text_domain = 'embed-bokun';
 
 	/**
 	 * Settings group name
 	 *
 	 * @var string
 	 */
-	public $settings_group_name = 'bokun-wp-settings-group';
+	public $settings_group_name = 'embed-bokun-settings-group';
 
 	/**
 	 * Access key settings name
 	 *
 	 * @var string
 	 */
-	public $access_key_settings_name = 'bokun_wp_access_key';
+	public $access_key_settings_name = 'embed_bokun_access_key';
 
 	/**
 	 * Secret key settings name
 	 *
 	 * @var string
 	 */
-	public $secret_key_settings_name = 'bokun_wp_secret_key';
+	public $secret_key_settings_name = 'embed_bokun_secret_key';
 
 	/**
 	 * Booking channel settings name
 	 *
 	 * @var string
 	 */
-	public $booking_channel_settings_name = 'bokun_wp_booking_channel_id';
+	public $booking_channel_settings_name = 'embed_bokun_booking_channel_id';
 
 	/**
 	 * Currency unit settings name
 	 *
 	 * @var string
 	 */
-	public $currency_unit_settings_name = 'bokun_wp_currency_unit';
+	public $currency_unit_settings_name = 'embed_bokun_currency_unit';
 
 	/**
 	 * Cron hook name
 	 *
 	 * @var string
 	 */
-	public $cron_hook_name = 'bokun_wp_update_bokun_data';
+	public $cron_hook_name = 'embed_bokun_update_bokun_data';
 
 	/**
 	 * Array to query bokun posts
@@ -80,7 +80,7 @@ class Bokun_WP {
 		'posts_per_page' => - 1,
 		'meta_query'     => [
 			[
-				'key'     => '_bokun_wp_bokun_id',
+				'key'     => '_embed_bokun_bokun_id',
 				'compare' => 'EXISTS',
 			]
 		],
@@ -196,7 +196,7 @@ class Bokun_WP {
 	public function render_callback_bokun_product_list( $attributes ) {
 		ob_start(); // Turn on output buffering
 
-		bokun_wp_create_default_product_list($attributes);
+		embed_bokun_create_default_product_list($attributes);
 
 		$output = ob_get_contents(); // collect output
 		ob_end_clean(); // Turn off ouput buffer
@@ -212,39 +212,39 @@ class Bokun_WP {
 		if ( $attributes['useCustom'] ) {
 			global $post;
 
-			$data = get_post_meta( $post->ID, '_bokun_wp_product_api_response', true );
+			$data = get_post_meta( $post->ID, '_embed_bokun_product_api_response', true );
 
 			/**
-			 * Hook: bokun_wp_before_custom_product
+			 * Hook: embed_bokun_before_custom_product
 			 *
 			 * @hook: none defined
 			 */
-			do_action( 'bokun_wp_before_custom_product', $data, $attributes );
+			do_action( 'embed_bokun_before_custom_product', $data, $attributes );
 
 			/**
-			 * Hook: bokun_wp_custom_product
+			 * Hook: embed_bokun_custom_product
 			 *
-			 * @hook: bokun_wp_create_images_carousel - 5
-			 * @hook: bokun_wp_create_title - 10
-			 * @hook: bokun_wp_create_excerpt - 15
-			 * @hook: bokun_wp_create_duration - 20
-			 * @hook: bokun_wp_create_content_columns - 30
+			 * @hook: embed_bokun_create_images_carousel - 5
+			 * @hook: embed_bokun_create_title - 10
+			 * @hook: embed_bokun_create_excerpt - 15
+			 * @hook: embed_bokun_create_duration - 20
+			 * @hook: embed_bokun_create_content_columns - 30
 			 */
-			do_action( 'bokun_wp_custom_product', $data, $attributes );
+			do_action( 'embed_bokun_custom_product', $data, $attributes );
 
 			/**
-			 * Hook: bokun_wp_after_custom_product
+			 * Hook: embed_bokun_after_custom_product
 			 *
 			 * @hook: none defined
 			 */
-			do_action( 'bokun_wp_after_custom_product', $data, $attributes );
+			do_action( 'embed_bokun_after_custom_product', $data, $attributes );
 		} else {
 			/**
-			 * Hook: bokun_wp_default_product
+			 * Hook: embed_bokun_default_product
 			 *
-			 * @hook: bokun_wp_create_default_product - 10
+			 * @hook: embed_bokun_create_default_product - 10
 			 */
-			do_action( 'bokun_wp_default_product', $attributes );
+			do_action( 'embed_bokun_default_product', $attributes );
 		}
 
 		echo '</div>';
@@ -256,7 +256,7 @@ class Bokun_WP {
 	}
 
 	public function register_bokun_meta() {
-		register_post_meta( '', '_bokun_wp_bokun_id', array(
+		register_post_meta( '', '_embed_bokun_bokun_id', array(
 			'show_in_rest'  => true,
 			'single'        => true,
 			'type'          => 'number',
@@ -308,7 +308,7 @@ class Bokun_WP {
 			$posts = get_posts( $args );
 
 			foreach ( $posts as $post ) {
-				$bokun_id   = get_post_meta( $post->ID, '_bokun_wp_bokun_id', true );
+				$bokun_id   = get_post_meta( $post->ID, '_embed_bokun_bokun_id', true );
 				$bokun_auth = new Bokun_auth( 'GET', '/activity.json/' . $bokun_id );
 				$data       = $bokun_auth->get_bokun_data();
 
@@ -332,7 +332,7 @@ class Bokun_WP {
 			__( 'Bokun settings', $this->text_domain ),
 			__( 'Bokun settings', $this->text_domain ),
 			'edit_posts',
-			'bokun-wp-settings-page',
+			'embed-bokun-settings-page',
 			[ $this, 'create_settings_page' ]
 		);
 
@@ -340,7 +340,7 @@ class Bokun_WP {
 			'create_bokun_data_meta_box',
 			__( 'Get Bokun data', $this->text_domain ),
 			[ $this, 'create_bokun_data_importer_meta_box_content' ],
-			apply_filters( 'bokun_wp_support_post_types', [ 'post' ] ),
+			apply_filters( 'embed_bokun_support_post_types', [ 'post' ] ),
 			'side',
 			'low'
 		);
@@ -355,7 +355,7 @@ class Bokun_WP {
 	 */
 	public function save_meta_box( $post_id ) {
 
-		if ( ! isset( $_POST["bokun_wp_meta_box_nonce"] ) || ! wp_verify_nonce( $_POST["bokun_wp_meta_box_nonce"], 'verify_bokun_wp_nonce' ) ) {
+		if ( ! isset( $_POST["embed_bokun_meta_box_nonce"] ) || ! wp_verify_nonce( $_POST["embed_bokun_meta_box_nonce"], 'verify_embed_bokun_nonce' ) ) {
 			return $post_id;
 		}
 
@@ -368,7 +368,7 @@ class Bokun_WP {
 		}
 
 		$fields = [
-			'_bokun_wp_bokun_id',
+			'_embed_bokun_bokun_id',
 		];
 		foreach ( $fields as $field ) {
 			if ( array_key_exists( $field, $_POST ) ) {
@@ -417,7 +417,7 @@ class Bokun_WP {
 		$dt = new DateTime();
 		$dt->setTimestamp( $timestamp );
 		$dt->setTimezone( new DateTimeZone( $timezone_offset ) );
-		$datetime = $dt->format( apply_filters( 'bokun_wp_cron_date_dormat', 'd.m.Y H:i:s' ) );
+		$datetime = $dt->format( apply_filters( 'embed_bokun_cron_date_dormat', 'd.m.Y H:i:s' ) );
 
 		return $datetime;
 	}
@@ -433,7 +433,7 @@ class Bokun_WP {
 // Require classes
 include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_auth.php';
 include_once plugin_dir_path( __FILE__ ) . 'classes/bokun_helpers.php';
-include_once plugin_dir_path( __FILE__ ) . 'includes/bokun-wp-hooks.php';
-include_once plugin_dir_path( __FILE__ ) . 'includes/bokun-wp-functions.php';
+include_once plugin_dir_path( __FILE__ ) . 'includes/embed-bokun-hooks.php';
+include_once plugin_dir_path( __FILE__ ) . 'includes/embed-bokun-functions.php';
 
 $bokun_data_importer = new Bokun_WP();

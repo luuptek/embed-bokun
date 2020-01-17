@@ -1,4 +1,4 @@
-# Bokun WP WordPress plugin
+# Embed Bokun WordPress plugin
 
 Allows you to add Bokun products to your WordPress site via blocks.
 
@@ -10,18 +10,18 @@ Plugin is extremely developer friendly. See the documentation below.
 
 ### Filters
 
-`bokun_wp_support_post_types` ==> Define the post types where Bokun ID meta box is visible
+`embed_bokun_support_post_types` ==> Define the post types where Bokun ID meta box is visible
 
 ```
-add_filter('bokun_wp_support_post_types', function () {
+add_filter('embed_bokun_support_post_types', function () {
     return [ 'your_post_type' ];
 });
 ```
 
-`bokun_wp_cron_date_dormat` ==> define how to show date and time in Bokun ID meta box
+`embed_bokun_cron_date_dormat` ==> define how to show date and time in Bokun ID meta box
 
 ```
-add_filter('bokun_wp_cron_date_dormat', function() {
+add_filter('embed_bokun_cron_date_dormat', function() {
     return 'd.m.Y H:i:s'; //define whatever you need...
 });
 ```
@@ -37,16 +37,16 @@ You can remove the actions and build your own actions in your theme.
 Custom widget has these actions hooked.
 
 ```
-add_action( 'bokun_wp_custom_product', 'bokun_wp_create_images_carousel', 5, 2 );
-add_action( 'bokun_wp_custom_product', 'bokun_wp_create_title', 10, 2 );
-add_action( 'bokun_wp_custom_product', 'bokun_wp_create_excerpt', 15, 2 );
-add_action( 'bokun_wp_custom_product', 'bokun_wp_create_duration', 20, 2 );
-add_action( 'bokun_wp_custom_product', 'bokun_wp_create_content_columns', 30, 2 );
+add_action( 'embed_bokun_custom_product', 'embed_bokun_create_images_carousel', 5, 2 );
+add_action( 'embed_bokun_custom_product', 'embed_bokun_create_title', 10, 2 );
+add_action( 'embed_bokun_custom_product', 'embed_bokun_create_excerpt', 15, 2 );
+add_action( 'embed_bokun_custom_product', 'embed_bokun_create_duration', 20, 2 );
+add_action( 'embed_bokun_custom_product', 'embed_bokun_create_content_columns', 30, 2 );
 ```
 
 You can also add actions before and after the custom widget content with these two actions, plugin it self will not hook into these:
-`bokun_wp_before_custom_product`
-`bokun_wp_after_custom_product`
+`embed_bokun_before_custom_product`
+`embed_bokun_after_custom_product`
 
 ### Data fetch from Bokun to build customm widget
 
@@ -54,7 +54,7 @@ You need to define Bokun product ID for posts where you want to use custom style
 
 System will fetch data from Bokun automatically hourly.
 
-Response is saved as post meta data `_bokun_wp_product_api_response`. You can use that data to build your custom style widget.
+Response is saved as post meta data `_embed_bokun_product_api_response`. You can use that data to build your custom style widget.
 
 ### Building your own css-styles
 

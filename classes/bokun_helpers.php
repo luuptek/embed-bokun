@@ -16,7 +16,7 @@ class Bokun_helpers {
 	}
 
 	private static function update_post_meta_details_for_activity( $post_id, $data ) {
-		update_post_meta( $post_id, '_bokun_wp_product_api_response', $data );
+		update_post_meta( $post_id, '_embed_bokun_product_api_response', $data );
 		//update_post_meta( $post_id, '_bokun_activity_description', self::get_post_content( $data ) );
 		//update_post_meta( $post_id, '_bokun_activity_vendor_title', $data->actualVendor->title );
 		//update_post_meta( $post_id, '_bokun_activity_starting_price', $data->nextDefaultPrice );
