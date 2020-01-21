@@ -29,36 +29,27 @@ class Bokun_auth {
 	}
 
 	/**
-	 * Get the actual json content from the api via curl
+	 * Get the actual json content
 	 *
 	 * Use this function to get bokun data into array
 	 *
 	 * @return array|mixed|object
 	 */
 	public function get_bokun_data() {
-		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_HTTPGET, 1 );
-		curl_setopt( $ch, CURLOPT_HEADER, true );
-		$request_uri = $this->api_base_url . $this->bokun_json_path;
-		curl_setopt( $ch, CURLOPT_URL, $request_uri );
 
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $this->get_curl_headers() );
+		$request_uri  = $this->api_base_url . $this->bokun_json_path;
+		$api_response = wp_remote_get( $request_uri, $this->get_curl_headers() );
 
-		/**
-		 * Dont get the actual headers!!
-		 */
-		curl_setopt( $ch, CURLOPT_HEADER, 0 );
-
-		$output    = curl_exec( $ch );
-		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-		curl_close( $ch );
-
-		if ( $http_code === 200 ) {
-			return json_decode( $output );
+		if ( ! is_wp_error( $api_response ) ) {
+			if ( $api_response['response']['code'] === 200 ) {
+				return json_decode( wp_remote_retrieve_body( $api_response ) );
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
+
 	}
 
 	/**
@@ -99,10 +90,12 @@ class Bokun_auth {
 	 */
 	private function get_curl_headers() {
 		return [
-			'Accept: application/json',
-			'X-Bokun-AccessKey: ' . $this->bokun_access_key,
-			'X-Bokun-Date: ' . $this->utc_datetime,
-			'X-Bokun-Signature: ' . $this->get_bokun_signature(),
+			'headers' => [
+				'Accept'            => 'application/json',
+				'X-Bokun-AccessKey' => $this->bokun_access_key,
+				'X-Bokun-Date'      => $this->utc_datetime,
+				'X-Bokun-Signature' => $this->get_bokun_signature(),
+			],
 		];
 	}
 
