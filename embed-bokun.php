@@ -188,7 +188,7 @@ class Bokun_WP {
 
 		register_block_type(
 			'bokun/product-list-widget', array(
-				'render_callback' => [$this, 'render_callback_bokun_product_list'],
+				'render_callback' => [ $this, 'render_callback_bokun_product_list' ],
 			)
 		);
 	}
@@ -196,7 +196,7 @@ class Bokun_WP {
 	public function render_callback_bokun_product_list( $attributes ) {
 		ob_start(); // Turn on output buffering
 
-		embed_bokun_create_default_product_list($attributes);
+		embed_bokun_create_default_product_list( $attributes );
 
 		$output = ob_get_contents(); // collect output
 		ob_end_clean(); // Turn off ouput buffer
@@ -309,7 +309,7 @@ class Bokun_WP {
 
 			foreach ( $posts as $post ) {
 				$bokun_id   = get_post_meta( $post->ID, '_embed_bokun_bokun_id', true );
-				$bokun_auth = new Bokun_auth( 'GET', '/activity.json/' . $bokun_id );
+				$bokun_auth = new Bokun_auth( 'GET', apply_filters( 'embed_bokun_post_update_api_path', '/activity.json/' . $bokun_id, $post->ID, $bokun_id ) );
 				$data       = $bokun_auth->get_bokun_data();
 
 				/**

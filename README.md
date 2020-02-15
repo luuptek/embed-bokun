@@ -26,6 +26,15 @@ add_filter('embed_bokun_cron_date_dormat', function() {
 });
 ```
 
+`embed_bokun_post_update_api_path` ==> In case you need to modify api request when post update (example in case of Polang translations)
+
+```
+add_filter('embed_bokun_post_update_api_path', function( $string, $post_id, $bokun_id ) {
+    $string = '/activity.json/' . $bokun_id . '?lang=' . pll_get_post_language( $post_id ); //get polylang current post lang as parameter
+    return $string;
+}, 10, 3);
+```
+
 More filters coming the future....
 
 ### Actions

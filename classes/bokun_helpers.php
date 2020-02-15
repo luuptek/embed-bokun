@@ -77,4 +77,8 @@ class Bokun_helpers {
 	public static function get_excerpt($data) {
 		return $data->excerpt;
 	}
+
+	public static function get_api_path($bokun_id) {
+		return '/activity.json/' . $bokun_id;
+	}
 }

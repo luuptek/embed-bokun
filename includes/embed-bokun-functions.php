@@ -107,3 +107,7 @@ function embed_bokun_create_content_columns( $data, $attributes ) {
     </div>
 	<?php
 }
+
+function embed_bokun_get_post_update_api_path( $post_id, $bokun_id ) {
+	return Bokun_helpers::get_api_path( $bokun_id );
+}
