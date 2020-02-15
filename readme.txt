@@ -16,7 +16,7 @@ To be able to use the plugin, you need to have Gutenberg active (WordPress versi
 
 Plugin is extreme developer friendly allowing to create custom Bokun product block via few actions and filters.
 
-More details and documentation about the plugin can be found from Github: https://github.com/luuptek/embed-bokun
+More details and documentation about the plugin can be found from Github: [https://github.com/luuptek/embed-bokun](https://github.com/luuptek/embed-bokun)
 
 == Installation ==
 1. Activate the plugin
