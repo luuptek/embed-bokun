@@ -18,8 +18,16 @@ function embed_bokun_create_default_product( $attributes ) {
 }
 
 function embed_bokun_create_default_product_list( $attributes ) {
+
+	//Padding fallback to medium if not set
+	if ( ! isset( $attributes['paddingSize'] ) ) {
+		$padding = 'medium-padding';
+	} else {
+		$padding = $attributes['paddingSize'];
+	}
+
 	?>
-    <div class="wp-block-bokun-product-list-widget align<?php echo $attributes['align']; ?>">
+    <div class="wp-block-bokun-product-list-widget align<?php echo $attributes['align'] . ' ' . $padding; ?>">
         <script type="text/javascript"
                 src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId'] ?>"
                 async></script>

@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classNames from 'classnames';
 
 //  Import CSS.
 import './style.scss'
@@ -13,7 +14,7 @@ const {__} = wp.i18n;
 const {InspectorControls} = wp.blockEditor;
 const {Fragment, RawHTML} = wp.element;
 const {registerBlockType} = wp.blocks;
-const {TextControl, ToggleControl, Panel, PanelBody, PanelRow} = wp.components;
+const {TextControl, SelectControl, ToggleControl, Panel, PanelBody, PanelRow} = wp.components;
 
 registerBlockType('bokun/product-list-widget', {
     title: __('Bokun product list'),
@@ -36,7 +37,10 @@ registerBlockType('bokun/product-list-widget', {
         },
         productListId: {
             type: 'string'
-        }
+        },
+        paddingSize: {
+            type: 'string'
+        },
     },
 
     // The UI for the WordPress editor
@@ -67,9 +71,22 @@ registerBlockType('bokun/product-list-widget', {
                                 label="Booking channel ID"
                             />
                         </PanelRow>
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Padding')}
+                                value={ attributes.paddingSize }
+                                options={ [
+                                    { label: 'No padding', value: 'no-padding' },
+                                    { label: 'Small padding', value: 'small-padding' },
+                                    { label: 'Medium padding', value: 'medium-padding' },
+                                    { label: 'Large padding', value: 'large-padding' },
+                                ] }
+                                onChange={ value => setAttributes( { paddingSize: value } ) }
+                            />
+                        </PanelRow>
                     </PanelBody>
                 </InspectorControls>
-                <div className={className}>
+                <div className={classNames(className, attributes.paddingSize)}>
                     {icons.bokunWhiteLogo}
                     {(!attributes.bookingChannelId || !attributes.productListId) &&
                     <p className={'wp-block-bokun-product-widget__warning'}>{__('When using default widget you need to define booking channel and bokun product id in block settings!')}</p>}

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-//import classnames from 'classnames';
+import classNames from 'classnames';
 //import jQuery from 'jquery';
 import 'slick-carousel';
 
@@ -21,7 +21,7 @@ const { __ } = wp.i18n;
 const {InspectorControls} = wp.blockEditor;
 const {Fragment, RawHTML} = wp.element;
 const { registerBlockType } = wp.blocks;
-const { TextControl, ToggleControl, Panel, PanelBody, PanelRow } = wp.components;
+const { TextControl, SelectControl, ToggleControl, Panel, PanelBody, PanelRow } = wp.components;
 
 registerBlockType('bokun/product-widget', {
     title: __( 'Bokun product' ),
@@ -50,6 +50,9 @@ registerBlockType('bokun/product-widget', {
         productId: {
             type: 'string'
         },
+        paddingSize: {
+            type: 'string'
+        },
         useCustom: {
             type: 'boolean',
             default: false
@@ -71,6 +74,19 @@ registerBlockType('bokun/product-widget', {
                                 checked={ attributes.useCustom }
                                 help={`Bokun plugin comes with default custom styling. You can overwrite the styling in your theme.`}
                                 onChange={ () => setAttributes( { useCustom: ! attributes.useCustom } ) }
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Padding')}
+                                value={ attributes.paddingSize }
+                                options={ [
+                                    { label: 'No padding', value: 'no-padding' },
+                                    { label: 'Small padding', value: 'small-padding' },
+                                    { label: 'Medium padding', value: 'medium-padding' },
+                                    { label: 'Large padding', value: 'large-padding' },
+                                ] }
+                                onChange={ value => setAttributes( { paddingSize: value } ) }
                             />
                         </PanelRow>
                         { ! attributes.useCustom && (
@@ -97,7 +113,7 @@ registerBlockType('bokun/product-widget', {
                         )}
                     </PanelBody>
                 </InspectorControls>
-                <div className={className}>
+                <div className={classNames(className, attributes.paddingSize)}>
                     { icons.bokunWhiteLogo }
                     { ( attributes.useCustom && attributes.productIdMeta === 0) && <p className={'wp-block-bokun-product-widget__warning'}>{__('You have selected to show custom widget, but Bokun ID is not defined for this post. You need to define it under the document tab.')}</p> }
                     { ( attributes.useCustom && attributes.productIdMeta !== 0) && <p>{__('Your custom widget is ready. Just preview the page and see it in action. You may need to wait an hour until data is fetched from Bokun.')}</p> }

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Embed Bokun
  * Description: Bokun plugin for WordPress.
- * Version: 0.1.1
+ * Version: 0.2
  * Author: Luuptek
  * Author URI: https://www.luuptek.fi
  * License: GPLv2
@@ -207,7 +207,14 @@ class Bokun_WP {
 	public function render_callback_bokun_product( $attributes ) {
 		ob_start(); // Turn on output buffering
 
-		echo '<div class="wp-block-bokun-product-widget align' . $attributes['align'] . '">';
+		//Padding fallback to medium if not set
+		if ( ! isset( $attributes['paddingSize'] ) ) {
+			$padding = 'medium-padding';
+		} else {
+			$padding = $attributes['paddingSize'];
+		}
+
+		echo '<div class="wp-block-bokun-product-widget align' . $attributes['align'] . ' ' . $padding . '">';
 
 		if ( $attributes['useCustom'] ) {
 			global $post;
