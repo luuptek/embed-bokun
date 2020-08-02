@@ -64,6 +64,13 @@ class Bokun_WP {
 	public $currency_unit_settings_name = 'embed_bokun_currency_unit';
 
 	/**
+	 * Currency unit settings name
+	 *
+	 * @var string
+	 */
+	public $use_js_front_end_settings_name = 'embed_bokun_use_front_end_js';
+
+	/**
 	 * Cron hook name
 	 *
 	 * @var string
@@ -136,14 +143,16 @@ class Bokun_WP {
 			true // Enqueue the script in the footer.
 		);
 
-		//Script for front end
-		wp_enqueue_script(
-			'bokun-product-widget-block-js', // Handle.
-			plugins_url( '/dist/blocks.build.js', __FILE__ ), // Block.build.js: We register the block here. Built with Webpack.
-			array( 'jquery' ), // Dependencies, defined above.
-			null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
-			true // Enqueue the script in the footer.
-		);
+		//Script for front end, only if setting ticked
+		if ( get_option( $this->use_js_front_end_settings_name ) === '1' ) {
+			wp_enqueue_script(
+				'bokun-product-widget-block-js', // Handle.
+				plugins_url( '/dist/blocks.build.js', __FILE__ ), // Block.build.js: We register the block here. Built with Webpack.
+				array( 'jquery' ), // Dependencies, defined above.
+				null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
+				true // Enqueue the script in the footer.
+			);
+		}
 
 		// Register block editor styles for backend.
 		wp_register_style(
@@ -292,6 +301,7 @@ class Bokun_WP {
 		register_setting( $this->settings_group_name, $this->secret_key_settings_name );
 		register_setting( $this->settings_group_name, $this->booking_channel_settings_name );
 		register_setting( $this->settings_group_name, $this->currency_unit_settings_name );
+		register_setting( $this->settings_group_name, $this->use_js_front_end_settings_name );
 	}
 
 	/**
