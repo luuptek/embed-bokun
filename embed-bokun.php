@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Embed Bokun
  * Description: Bokun plugin for WordPress.
- * Version: 0.21
+ * Version: 0.22
  * Author: Luuptek
  * Author URI: https://www.luuptek.fi
  * License: GPLv2
