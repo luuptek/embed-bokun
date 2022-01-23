@@ -50,7 +50,7 @@ class Bokun_helpers {
 
 	public static function get_images_carousel_data( $data ) {
 		$array = [];
-		$base_url       = 'https://bokunprod.imgix.net';
+		$base_url       = 'https://imgcdn.bokun.tools';
 
 		foreach ( $data->photos as $photo ) {
 			$image_url              = $base_url . $photo->fileName . '?h=850&w=1500&fit=crop&crop=center&auto=format';
@@ -62,7 +62,7 @@ class Bokun_helpers {
 	}
 
 	public static function get_main_image($data, $width = 500, $height = 500) {
-		$base_url       = 'https://bokunprod.imgix.net';
+		$base_url       = 'https://imgcdn.bokun.tools';
 		return $base_url . $data->photos[0]->fileName . '?h=' . $height . '&w=' . $width . '&fit=crop&crop=center&auto=format';
 	}
 
