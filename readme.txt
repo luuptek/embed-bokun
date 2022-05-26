@@ -2,7 +2,7 @@
 Contributors: luuptek
 Tags: bokun
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
 Stable tag: 0.22
 License: GPLv2
