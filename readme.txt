@@ -2,9 +2,9 @@
 Contributors: luuptek
 Tags: bokun
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 0.22
+Stable tag: 0.23
 License: GPLv2
 
 Embed Bokun allows you a possibility to add Bokun products (bokun.io) to your WordPress site easily via Gutenberg block.
