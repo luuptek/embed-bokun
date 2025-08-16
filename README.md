@@ -65,6 +65,8 @@ System will fetch data from Bokun automatically hourly.
 
 Response is saved as post meta data `_embed_bokun_product_api_response`. You can use that data to build your custom style widget.
 
+NOTE that you need to define api key and secret key in settings => bokun settings.
+
 ### Building your own css-styles
 
 Do not overwrite the styles in the plugin folder. In a case of an update, your changes are gone.
