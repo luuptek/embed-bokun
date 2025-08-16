@@ -21,9 +21,9 @@ if ( ! $bokun->has_settings_ok() ) {
 		<?php _e( 'Bokun ID', $this->text_domain ) ?>
     </label>
     <input type="text" name="_embed_bokun_bokun_id" id="embed_bokun_bokun_id"
-           value="<?php echo get_post_meta( get_the_ID(), '_embed_bokun_bokun_id', true ); ?>">
+           value="<?php echo esc_attr( get_post_meta( get_the_ID(), '_embed_bokun_bokun_id', true ) ); ?>">
     <p>
-		<?php echo sprintf( __( 'Automatic data import is scheduled next on %s', $this->text_domain ), $bokun->get_datetime_with_timezone_offset() ) ?>
+		<?php echo sprintf( esc_html__( 'Automatic data import is scheduled next on %s', $this->text_domain ), $bokun->get_datetime_with_timezone_offset() ) ?>
     </p>
 	<?php
 }

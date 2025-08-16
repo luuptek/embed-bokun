@@ -70,7 +70,7 @@ function embed_bokun_create_images_carousel( $data, $attributes ) {
 
 			foreach ( $images as $image ) {
 				?>
-				<img src="<?php echo $image ?>"/>
+				<img src="<?php echo esc_url( $image ); ?>"/>
 				<?php
 			}
 
