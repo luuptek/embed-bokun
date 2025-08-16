@@ -223,7 +223,7 @@ class Bokun_WP {
 			$padding = $attributes['paddingSize'];
 		}
 
-		echo '<div class="wp-block-bokun-product-widget align' . $attributes['align'] . ' ' . $padding . '">';
+		echo '<div class="wp-block-bokun-product-widget align' . esc_attr( $attributes['align'] ) . ' ' . esc_attr( $padding ) . '">';
 
 		if ( $attributes['useCustom'] ) {
 			global $post;
