@@ -6,18 +6,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function embed_bokun_create_default_product( $attributes ) {
-	?>
-    <script type="text/javascript"
-            src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId'] ?>"
-            async></script>
 
-    <div class="bokunWidget"
-         data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId'] ?>/experience/<?php echo $attributes['productId'] ?>"></div>
-    <noscript>Please enable javascript in your browser to book</noscript>
+	if ( empty( $attributes['bookingChannelId'] ) || empty( $attributes['productId'] ) ) {
+		esc_html_e( 'Cannot show widget as booking channel and product id is missing...', 'embed-bokun' );
+
+		return;
+	}
+	?>
+	<script type="text/javascript"
+			src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo esc_attr( $attributes['bookingChannelId'] ); ?>"
+			async></script>
+
+	<div class="bokunWidget"
+		 data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId'] ?>/experience/<?php echo esc_attr( $attributes['productId'] ); ?>"></div>
+	<noscript>Please enable javascript in your browser to book</noscript>
 	<?php
 }
 
 function embed_bokun_create_default_product_list( $attributes ) {
+
+	if ( empty( $attributes['bookingChannelId'] ) || empty( $attributes['productListId'] ) ) {
+		esc_html_e( 'Cannot show widget as booking channel and product list id is missing...', 'embed-bokun' );
+
+		return;
+	}
 
 	//Padding fallback to medium if not set
 	if ( ! isset( $attributes['paddingSize'] ) ) {
@@ -27,15 +39,16 @@ function embed_bokun_create_default_product_list( $attributes ) {
 	}
 
 	?>
-    <div class="wp-block-bokun-product-list-widget align<?php echo $attributes['align'] . ' ' . $padding; ?>">
-        <script type="text/javascript"
-                src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId'] ?>"
-                async></script>
+	<div
+		class="wp-block-bokun-product-list-widget align<?php echo esc_attr( $attributes['align'] ) . ' ' . esc_attr( $padding ); ?>">
+		<script type="text/javascript"
+				src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo esc_attr( $attributes['bookingChannelId'] ); ?>"
+				async></script>
 
-        <div class="bokunWidget"
-             data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId'] ?>/product-list/<?php echo $attributes['productListId'] ?>"></div>
-        <noscript>Please enable javascript in your browser to book</noscript>
-    </div>
+		<div class="bokunWidget"
+			 data-src="https://widgets.bokun.io/online-sales/<?php echo esc_attr( $attributes['bookingChannelId'] ); ?>/product-list/<?php echo esc_attr( $attributes['productListId'] ); ?>"></div>
+		<noscript>Please enable javascript in your browser to book</noscript>
+	</div>
 
 	<?php
 }
@@ -57,7 +70,7 @@ function embed_bokun_create_images_carousel( $data, $attributes ) {
 
 			foreach ( $images as $image ) {
 				?>
-                <img src="<?php echo $image ?>"/>
+				<img src="<?php echo $image ?>"/>
 				<?php
 			}
 
@@ -67,52 +80,53 @@ function embed_bokun_create_images_carousel( $data, $attributes ) {
 }
 
 function embed_bokun_create_title( $data, $attributes ) {
-	echo '<h2 class="wp-block-bokun-product-widget__title">' . $data->title . '</h2>';
+	echo '<h2 class="wp-block-bokun-product-widget__title">' . esc_html( $data->title ) . '</h2>';
 }
 
 function embed_bokun_create_excerpt( $data, $attributes ) {
-	echo '<h3 class="wp-block-bokun-product-widget__excerpt">' . $data->excerpt . '</h3>';
+	echo '<h3 class="wp-block-bokun-product-widget__excerpt">' . esc_html( $data->excerpt ) . '</h3>';
 }
 
 function embed_bokun_create_duration( $data, $attributes ) {
 	?>
-    <div class="wp-block-bokun-product-widget__duration">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path class="wp-block-bokun-product-widget__svg-path"
-                  d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm14 226c0 7.7-6.3 14-14 14h-96c-7.7 0-14-6.3-14-14s6.3-14 14-14h82V128c0-7.7 6.3-14 14-14s14 6.3 14 14v146z"/>
-        </svg>
-        <span class="wp-block-bokun-product-widget__duration-text"><?php echo sprintf( __( 'Duration: %s', 'embed-bokun' ), $data->durationText ) ?></span>
-    </div>
+	<div class="wp-block-bokun-product-widget__duration">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+			<path class="wp-block-bokun-product-widget__svg-path"
+				  d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm14 226c0 7.7-6.3 14-14 14h-96c-7.7 0-14-6.3-14-14s6.3-14 14-14h82V128c0-7.7 6.3-14 14-14s14 6.3 14 14v146z"/>
+		</svg>
+		<span
+			class="wp-block-bokun-product-widget__duration-text"><?php echo sprintf( esc_html__( 'Duration: %s', 'embed-bokun' ), $data->durationText ); ?></span>
+	</div>
 	<?php
 }
 
 function embed_bokun_create_content_columns( $data, $attributes ) {
 	?>
-    <div class="wp-block-bokun-product-widget__content-row">
-        <div class="wp-block-bokun-product-widget__content-row__column-left">
-            <div class="wp-block-bokun-product-widget__bordered-content">
+	<div class="wp-block-bokun-product-widget__content-row">
+		<div class="wp-block-bokun-product-widget__content-row__column-left">
+			<div class="wp-block-bokun-product-widget__bordered-content">
 				<?php
 				echo embed_bokun_get_product_description( $data );
 				?>
-            </div>
-        </div>
+			</div>
+		</div>
 
-        <div class="wp-block-bokun-product-widget__content-row__column-right">
-            <div class="wp-block-bokun-product-widget__bordered-content">
-                <h2 class="wp-block-bokun-product-widget__title wp-block-bokun-product-widget__title--booking">
-					<?php _e( 'Book online', 'embed-bokun' ); ?>
-                </h2>
-                <script type="text/javascript"
-                        src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo $attributes['bookingChannelId']; ?>"
-                        async></script>
+		<div class="wp-block-bokun-product-widget__content-row__column-right">
+			<div class="wp-block-bokun-product-widget__bordered-content">
+				<h2 class="wp-block-bokun-product-widget__title wp-block-bokun-product-widget__title--booking">
+					<?php esc_html_e( 'Book online', 'embed-bokun' ); ?>
+				</h2>
+				<script type="text/javascript"
+						src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=<?php echo esc_attr( $attributes['bookingChannelId'] ); ?>"
+						async></script>
 
-                <div class="bokunWidget"
-                     data-src="https://widgets.bokun.io/online-sales/<?php echo $attributes['bookingChannelId']; ?>/experience-calendar/<?php echo $data->id; ?>"></div>
-                <noscript>Please enable javascript in your browser to book</noscript>
+				<div class="bokunWidget"
+					 data-src="https://widgets.bokun.io/online-sales/<?php echo esc_attr( $attributes['bookingChannelId'] ); ?>/experience-calendar/<?php echo esc_attr( $data->id ); ?>"></div>
+				<noscript>Please enable javascript in your browser to book</noscript>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 	<?php
 }
 

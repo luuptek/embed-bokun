@@ -223,12 +223,24 @@ class Bokun_WP {
 			$padding = $attributes['paddingSize'];
 		}
 
+		if ( ! isset( $attributes['align'] ) ) {
+			$attributes['align'] = '';
+		}
+
 		echo '<div class="wp-block-bokun-product-widget align' . esc_attr( $attributes['align'] ) . ' ' . esc_attr( $padding ) . '">';
+
+		if ( ! isset( $attributes['useCustom'] ) ) {
+			$attributes['useCustom'] = false;
+		}
 
 		if ( $attributes['useCustom'] ) {
 			global $post;
 
 			$data = get_post_meta( $post->ID, '_embed_bokun_product_api_response', true );
+
+			if ( empty( $data ) ) {
+				return esc_html__( 'WARNING, cannot show custom styled product! This post does not have api response saved to post meta.', 'embed-bokun' );
+			}
 
 			/**
 			 * Hook: embed_bokun_before_custom_product

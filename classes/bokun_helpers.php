@@ -28,19 +28,19 @@ class Bokun_helpers {
 		$content = $data->description;
 
 		if ( ! empty( $data->included ) ) {
-			$content .= '<h2>' . __( 'What\'s included?' ) . '</h2>' . $data->included;
+			$content .= '<h2>' . esc_html__( 'What\'s included?' ) . '</h2>' . $data->included;
 		}
 
 		if ( ! empty( $data->requirements ) ) {
-			$content .= '<h2>' . __( 'Requirements' ) . '</h2>' . $data->requirements;
+			$content .= '<h2>' . esc_html__( 'Requirements' ) . '</h2>' . $data->requirements;
 		}
 
 		if ( ! empty( $data->attention ) ) {
-			$content .= '<h2>' . __( 'Attention' ) . '</h2>' . $data->attention;
+			$content .= '<h2>' . esc_html__( 'Attention' ) . '</h2>' . $data->attention;
 		}
 
 		if ( ! empty( $data->excluded ) ) {
-			$content .= '<h2>' . __( 'Exclusions' ) . '</h2>' . $data->excluded;
+			$content .= '<h2>' . esc_html__( 'Exclusions' ) . '</h2>' . $data->excluded;
 		}
 
 		return $content;
